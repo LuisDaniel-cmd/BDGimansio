@@ -3,40 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Tareas - Presentación de Proyecto</title>
+    <title>Presentación Proyecto BD - Gimnasio</title>
     <style>
-        body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; background-color: #f4f4f4; }
-        h1 { text-align: center; color: #333; }
-        .badge { background: #e1f5fe; color: #01579b; padding: 5px 10px; border-radius: 4px; font-size: 0.8em; margin-bottom: 10px; display: inline-block; }
-        ul { list-style-type: none; padding: 0; background: white; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        li { padding: 15px; border-bottom: 1px solid #ddd; }
-        li:last-child { border-bottom: none; }
-        /* El formulario se mantiene visualmente, pero no enviará datos en GitHub Pages */
-        form { display: flex; margin-top: 20px; opacity: 0.7; }
-        input[type="text"] { flex-grow: 1; padding: 10px; border: 1px solid #ccc; border-radius: 3px; }
-        button { padding: 10px 15px; border: none; background-color: #6c757d; color: white; border-radius: 3px; cursor: not-allowed; }
+        body { font-family: sans-serif; max-width: 800px; margin: auto; padding: 20px; background-color: #f4f4f4; color: #333; }
+        .header { text-align: center; padding: 20px; background: #fff; border-radius: 8px; shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h1 { color: #2c3e50; margin: 0; }
+        .badge { background: #28a745; color: white; padding: 5px 12px; border-radius: 20px; font-size: 0.8em; }
+        
+        .project-info { background: #e9ecef; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #007bff; }
+        
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background-color: #007bff; color: white; }
+        
+        .footer { margin-top: 30px; font-size: 0.8em; color: #666; text-align: center; }
     </style>
 </head>
 <body>
-    <h1>Mis Tareas (Vista de Proyecto)</h1>
-    <div class="badge">Modo: Demostración Estática</div>
 
-    <p style="font-size: 0.9em; color: #666;">
-        Esta página muestra el diseño final. En el repositorio principal, el sistema se conecta a <strong>PostgreSQL</strong> mediante <strong>psycopg</strong>[cite: 1, 2].
-    </p>
+    <div class="header">
+        <h1>Gestión de Gimnasio <span class="badge">Vista de Proyecto</span></h1>
+    </div>
 
-    <form>
-        <input type="text" placeholder="El guardado requiere servidor activo..." disabled>
-        <button type="button">Agregar</button>
-    </form>
+    <div class="project-info">
+        <strong>Explicación del Proyecto:</strong><br>
+        Este sistema está diseñado con un backend en <strong>Flask</strong> y una base de datos <strong>PostgreSQL</strong> alojada en <strong>Neon</strong>. 
+        Utiliza <code>psycopg</code> para la gestión de consultas SQL. Esta vista es una demostración estática para GitHub Pages.
+    </div>
 
-    <br>
+    <h3>Lista de Tareas / Miembros (Datos de ejemplo)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Descripción / Nombre</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Configuración de tablas en PostgreSQL</td>
+                <td>✅ Completado</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Conexión Flask con URL de Neon</td>
+                <td>✅ Completado</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Pruebas de inserción (INSERT INTO)</td>
+                <td>✅ Completado</td>
+            </tr>
+        </tbody>
+    </table>
 
-    <ul>
-        <li>Diseñar el esquema de la base de datos en Neon </li>
-        <li>Configurar las rutas de Flask en prueba.py </li>
-        <li>Instalar dependencias del requirements.txt [cite: 2]</li>
-        <li>Realizar pruebas de conexión con la DATABASE_URL </li>
-    </ul>
+    <div class="footer">
+        Desarrollado para la materia de Bases de Datos | Enero 2026
+    </div>
+
 </body>
 </html>
