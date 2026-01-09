@@ -3,117 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gimnasio Pro - Dashboard</title>
+    <title>Gimnasio Pro - Sistema de Gestión</title>
     <style>
-        :root { --primary-blue: #4f46e5; --success-green: #16a34a; --bg-gray: #f9fafb; --text-dark: #1f2937; }
-        body { font-family: 'Inter', sans-serif; margin: 0; background-color: #f3f4f6; color: var(--text-dark); }
+        :root { --primary-blue: #4f46e5; --success-green: #16a34a; --danger-red: #ef4444; --bg-light: #f3f4f6; --text-dark: #1f2937; }
+        body { font-family: 'Inter', -apple-system, sans-serif; margin: 0; background-color: var(--bg-light); color: var(--text-dark); }
         
-        /* Navbar superior igual a tu captura */
-        .navbar { background: white; padding: 10px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e5e7eb; }
-        .logo { color: #4f46e5; font-weight: bold; font-size: 1.2rem; }
-        .user-info { display: flex; align-items: center; gap: 20px; font-size: 0.9rem; }
-        .role-tag { color: #4f46e5; font-weight: 500; }
-        .btn-logout { background: #ef4444; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+        /* Navbar Superior (Basado en captura image_d41c68.png) */
+        .navbar { background: white; padding: 12px 60px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e5e7eb; sticky: top; }
+        .logo { color: var(--primary-blue); font-weight: bold; font-size: 1.4rem; }
+        .user-meta { display: flex; align-items: center; gap: 20px; font-size: 0.95rem; }
+        .role-badge { color: var(--primary-blue); font-weight: 500; }
+        .btn-logout { background: var(--danger-red); color: white; border: none; padding: 8px 18px; border-radius: 6px; cursor: pointer; font-weight: 500; }
 
-        .container { padding: 40px; max-width: 1200px; margin: auto; }
-        h1 { font-size: 1.8rem; margin-bottom: 30px; }
+        /* Contenedor Principal */
+        .container { padding: 40px 60px; max-width: 1300px; margin: auto; }
+        .view { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .view.active { display: block; }
 
-        /* Selector de Rol para la demo */
-        .role-selector { background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 30px; border: 1px dashed #4f46e5; }
+        /* Barra de navegación secundaria para volver */
+        .sub-nav { margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; }
+        .back-link { color: var(--primary-blue); text-decoration: none; cursor: pointer; display: flex; align-items: center; gap: 5px; font-weight: 500; }
 
-        /* Grid de Cards */
-        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        
-        .card { background: white; padding: 25px; border-radius: 12px; border: 1px solid #e5e7eb; transition: 0.2s; display: none; }
-        .card.visible { display: block; }
-        .card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-        
-        .card.blue { border-top: 4px solid var(--primary-blue); }
+        /* Dashboard de Cards (Basado en image_d41c68.png) */
+        .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
+        .card { background: white; padding: 30px; border-radius: 12px; border: 1px solid #e5e7eb; cursor: pointer; transition: 0.3s; position: relative; display: none; }
+        .card.role-visible { display: block; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px -10px rgba(0,0,0,0.1); }
+        .card.blue { border-top: 5px solid var(--primary-blue); }
         .card.green { border: 2px solid var(--success-green); }
-        
-        .card h3 { margin: 0 0 10px 0; font-size: 1.1rem; }
+        .card h3 { margin: 0 0 10px 0; font-size: 1.2rem; }
         .card.blue h3 { color: var(--primary-blue); }
         .card.green h3 { color: var(--success-green); }
-        
-        .card p { font-size: 0.9rem; color: #6b7280; margin-bottom: 8px; }
-        .permission-note { font-size: 0.75rem; color: #9ca3af; }
-        .permission-note.green { color: var(--success-green); }
+        .card p { color: #6b7280; font-size: 0.95rem; margin-bottom: 10px; }
+        .perm-tag { font-size: 0.8rem; color: #9ca3af; font-style: italic; }
+
+        /* Estilo de Tablas (Basado en image_d48542.png) */
+        .table-container { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #f9fafb; padding: 15px 20px; text-align: left; color: #6b7280; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        td { padding: 18px 20px; border-top: 1px solid #f3f4f6; font-size: 0.95rem; }
+        .badge-type { padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; background: #e0e7ff; color: #4338ca; }
+
+        /* Selectores de Demo */
+        .demo-controls { background: #fff; padding: 20px; border-radius: 12px; margin-bottom: 40px; border: 2px dashed var(--primary-blue); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
+    <div class="container" style="padding-bottom: 0;">
+        <div class="demo-controls">
+            <label><strong>Simular Usuario:</strong></label>
+            <select id="rolePicker" onchange="changeUser()" style="padding: 8px; border-radius: 5px;">
+                <option value="publico">Invitado (general_publico)</option>
+                <option value="recepcionista">Recepcionista (recepcion_mañana)</option>
+                <option value="instructor">Instructor (maestro_instructor)</option>
+                <option value="jefe">Administrador (admin_gym)</option>
+            </select>
+            <span style="margin-left: 20px; color: #666; font-size: 0.9rem;">Interactúa con los roles para filtrar los permisos de la BD.</span>
+        </div>
+    </div>
+
     <nav class="navbar">
         <div class="logo">Gimnasio Pro</div>
-        <div class="user-info">
-            <span id="display-user">Usuario: invitado</span>
-            <span id="display-role" class="role-tag">Rol: publico</span>
+        <div class="user-meta">
+            <span id="txt-user">Usuario: invitado</span>
+            <span id="txt-role" class="role-badge">Rol: publico</span>
             <button class="btn-logout">Cerrar Sesión</button>
         </div>
     </nav>
 
     <div class="container">
-        <div class="role-selector">
-            <label><strong>Simular Usuario:</strong></label>
-            <select id="rolePicker" onchange="updateDashboard()">
-                <option value="publico">Público General</option>
-                <option value="recepcionista">Recepcionista (recepcion_mañana)</option>
-                <option value="instructor">Instructor (maestro_instructor)</option>
-                <option value="jefe">Jefe / Admin (admin_gym)</option>
-            </select>
-            <small>← Selecciona un rol para ver cómo cambian los permisos en tiempo real.</small>
-        </div>
 
-        <h1 id="welcome-text">Dashboard Principal</h1>
-
-        <div class="dashboard-grid">
-            <div class="card blue" data-roles="jefe,recepcionista">
-                <h3>Ver Miembros</h3>
-                <p>Accede a la lista de miembros registrados.</p>
-                <p class="permission-note">(Requiere permiso SELECT en miembro)</p>
-            </div>
-
-            <div class="card green" data-roles="jefe,recepcionista">
-                <h3>Agregar Miembro</h3>
-                <p>Registra un nuevo cliente en el sistema.</p>
-                <p class="permission-note">(Requiere permiso INSERT en miembro)</p>
-            </div>
-
-            <div class="card blue" data-roles="jefe,recepcionista">
-                <h3>Ver Pagos</h3>
-                <p>Consulta el historial de pagos de miembros.</p>
-                <p class="permission-note">(Requiere permiso SELECT en pago)</p>
-            </div>
-
-            <div class="card blue" data-roles="jefe,recepcionista,instructor">
-                <h3>Ver Inscripciones</h3>
-                <p>Revisa quién está inscrito en cada área.</p>
-                <p class="permission-note">(Permiso SELECT en inscripcion)</p>
-            </div>
-
-            <div class="card blue" data-roles="jefe,recepcionista,instructor,publico">
-                <h3>Ver Clases</h3>
-                <p>Revisa el horario de clases e instructores.</p>
-                <p class="permission-note green">(Permiso SELECT en clase es común)</p>
-            </div>
-
-            <div class="card blue" data-roles="jefe,publico">
-                <h3>Ver Tutores</h3>
-                <p>Lista de instructores disponibles.</p>
-                <p class="permission-note">(Requiere permiso SELECT en instructor)</p>
-            </div>
-
-            <div class="card blue" data-roles="jefe,instructor,recepcionista">
-                <h3>Pasar Asistencia</h3>
-                <p>Registra la entrada de miembros a clases.</p>
-                <p class="permission-note">(Requiere permiso INSERT/UPDATE en asistencia)</p>
-            </div>
-
-            <div class="card blue" data-roles="jefe,publico">
-                <h3>Ver Salas</h3>
-                <p>Consulta disponibilidad de salas de entrenamiento.</p>
-                <p class="permission-note">(Permiso SELECT en sala)</p>
+        <div id="view-dashboard" class="view active">
+            <h1>Dashboard Principal</h1>
+            <div class="dashboard-grid">
+                <div class="card blue" data-roles="jefe,recepcionista" onclick="navTo('view-miembros')">
+                    <h3>Ver Miembros</h3>
+                    <p>Accede a la lista de miembros registrados.</p>
+                    <span class="perm-tag">(SELECT en miembro)</span>
+                </div>
+                <div class="card green" data-roles="jefe,recepcionista" onclick="navTo('view-form-miembro')">
+                    <h3>Agregar Miembro</h3>
+                    <p>Registra un nuevo cliente en el sistema.</p>
+                    <span class="perm-tag">(INSERT en miembro)</span>
+                </div>
+                <div class="card blue" data-roles="jefe,recepcionista" onclick="navTo('view-pagos')">
+                    <h3>Ver Pagos</h3>
+                    <p>Consulta el historial financiero y transacciones.</p>
+                    <span class="perm-tag">(SELECT en pago)</span>
+                </div>
+                <div class="card blue" data-roles="jefe,publico,instructor,recepcionista" onclick="navTo('view-clases')">
+                    <h3>Ver Clases</h3>
+                    <p>Horarios de clases e instructores asignados.</p>
+                    <span class="perm-tag">(SELECT en clase)</span>
+                </div>
+                <div class="card blue" data-roles="jefe,publico" onclick="navTo('view-tutores')">
+                    <h3>Ver Tutores</h3>
+                    <p>Información de nuestro equipo de instructores.</p>
+                    <span class="perm-tag">(SELECT en instructor)</span>
+                </div>
+                <div class="card blue" data-roles="jefe,publico" onclick="navTo('view-salas')">
+                    <h3>Ver Salas</h3>
+                    <p>Disponibilidad de espacios físicos.</p>
+                    <span class="perm-tag">(SELECT en sala)</span>
+                </div>
             </div>
         </div>
+
+        <div id="view-miembros" class="view">
+            <div class="sub-nav">
+                <a class="back-link" onclick="navTo('view-dashboard')">← Volver al Dashboard</a>
+                <button class="btn-logout" style="background: var(--success-green)" onclick="navTo('view-form-miembro')">+ Agregar Miembro</button>
+            </div>
+            <h1>Lista de Miembros</h1>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>ID</th><th>Nombre Completo</th><th>Correo</th><th>Membresía</th></tr></thead>
+                    <tbody>
+                        <tr><td>1</td><td>Laura Gómez Pérez</td><td>laura.gomez@mail.com</td><td><span class="badge-type">PERMANENTE</span></td></tr>
+                        <tr><td>2</td><td>Miguel Hernández Soto</td><td>miguel.h@mail.com</td><td><span class="badge-type" style="background:#fef3c7; color:#92400e">TEMPORAL</span></td></tr>
+                        <tr><td>3</td><td>Sofía Martínez</td><td>sofia.m@mail.com</td><td><span class="badge-type">PERMANENTE</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="view-clases" class="view">
+            <div class="sub-nav"><a class="back-link" onclick="navTo('view-dashboard')">← Volver al Dashboard</a></div>
+            <h1 style="text-align: center;">Clases del Gimnasio</h1>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Clase</th><th>Horario</th><th>Instructor</th></tr></thead>
+                    <tbody>
+                        <tr><td>Yoga Matutino</td><td>L-M-V 07:00-08:00</td><td>Ana Torres</td></tr>
+                        <tr><td>CrossFit Nocturno</td><td>L-M-V 20:00-21:00</td><td>Brenda Mendoza</td></tr>
+                        <tr><td>Zumba Tarde</td><td>Mar-Jue 18:00-19:00</td><td>David Luna</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="view-pagos" class="view">
+            <div class="sub-nav"><a class="back-link" onclick="navTo('view-dashboard')">← Volver al Dashboard</a></div>
+            <h1>Historial de Pagos</h1>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>ID Pago</th><th>Fecha</th><th>Monto</th><th>Estado</th></tr></thead>
+                    <tbody>
+                        <tr><td>#P-8821</td><td>2026-01-05</td><td>$45.00</td><td><span style="color:green">Completado</span></td></tr>
+                        <tr><td>#P-8822</td><td>2026-01-07</td><td>$120.00</td><td><span style="color:green">Completado</span></td></tr>
+                        <tr><td>#P-8823</td><td>2026-01-08</td><td>$30.00</td><td><span style="color:orange">Procesando</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -124,27 +170,26 @@
             'jefe': 'admin_gym'
         };
 
-        function updateDashboard() {
-            const selectedRole = document.getElementById('rolePicker').value;
-            const cards = document.querySelectorAll('.card');
+        function changeUser() {
+            const role = document.getElementById('rolePicker').value;
+            document.getElementById('txt-user').innerText = `Usuario: ${userMap[role]}`;
+            document.getElementById('txt-role').innerText = `Rol: ${role}`;
             
-            // Actualizar textos de la barra superior
-            document.getElementById('display-user').innerText = `Usuario: ${userMap[selectedRole]}`;
-            document.getElementById('display-role').innerText = `Rol: ${selectedRole}`;
-
-            // Filtrar cards según el atributo data-roles
-            cards.forEach(card => {
-                const allowedRoles = card.getAttribute('data-roles').split(',');
-                if (allowedRoles.includes(selectedRole)) {
-                    card.classList.add('visible');
-                } else {
-                    card.classList.remove('visible');
-                }
+            // Filtrar Cards
+            document.querySelectorAll('.card').forEach(card => {
+                const roles = card.getAttribute('data-roles').split(',');
+                if(roles.includes(role)) card.classList.add('role-visible');
+                else card.classList.remove('role-visible');
             });
+            navTo('view-dashboard');
         }
 
-        // Ejecutar al cargar la página
-        window.onload = updateDashboard;
+        function navTo(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+        }
+
+        window.onload = changeUser;
     </script>
 </body>
 </html>
