@@ -4,8 +4,8 @@ enfocada en la implementación de una arquitectura relacional segura y el uso de
 servicios en la nube para el alojamiento de bases de datos y aplicaciones.
 
 Enlaces 🔗
-* Aplicación en vivo: https://www.google.com/search?q=https://gimnasio-pro-web.onrender.com
-* Aplicación estatica https://www.google.com/search?q=https://LuisDaniel-cmd.github.io/BDGimansio/
+* Aplicación en vivo: [https://gimnasio-pro-web.onrender.com](https://gimansioweb.onrender.com/login)
+* Aplicación estatica https://LuisDaniel-cmd.github.io/BDGimansio/
 
 Herramientas 🛠
 Lenguaje: Python 3.10
